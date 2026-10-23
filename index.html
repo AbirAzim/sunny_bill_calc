@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bill Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <h1>Bill Calculator</h1>
+        <p class="subtitle">Enter your meter readings to get the bill</p>
+      </div>
+
+      <!-- Unit price lives here: visible, but out of the way -->
+      <button class="rate-chip" id="rateChip" type="button" aria-haspopup="dialog" aria-controls="rateDialog">
+        <span class="rate-label">Unit price</span>
+        <span class="rate-value" id="rateDisplay">—</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z" /></svg>
+      </button>
+    </header>
+
+    <section class="card" aria-label="Meter readings">
+      <div class="field">
+        <label for="present">Present reading</label>
+        <div class="input-wrap">
+          <input id="present" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1250" autocomplete="off" />
+          <span class="suffix">units</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="previous">Previous reading</label>
+        <div class="input-wrap">
+          <input id="previous" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1100" autocomplete="off" />
+          <span class="suffix">units</span>
+        </div>
+      </div>
+
+      <p class="error" id="error" role="alert" hidden></p>
+
+      <div class="result" id="result" aria-live="polite">
+        <div class="result-row">
+          <span>Units used</span>
+          <strong id="unitsUsed">0</strong>
+        </div>
+        <div class="result-row muted">
+          <span>× Unit price</span>
+          <span id="rateInline">—</span>
+        </div>
+        <div class="divider"></div>
+        <div class="total">
+          <span>Total bill</span>
+          <output id="total"><span id="totalAmount">0.00</span><span class="currency" id="totalCurrency"></span></output>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+        <button class="btn primary" id="copyBtn" type="button" disabled>Copy total</button>
+      </div>
+    </section>
+
+    <p class="formula">Bill = (Present − Previous) × Unit price</p>
+  </main>
+
+  <!-- Unit price settings -->
+  <dialog id="rateDialog" class="dialog" aria-labelledby="rateTitle">
+    <form method="dialog" id="rateForm">
+      <h2 id="rateTitle">Unit price</h2>
+      <p class="dialog-note">Saved on this device. You'll rarely need to change it.</p>
+
+      <div class="field">
+        <label for="rateInput">Price per unit</label>
+        <div class="input-wrap">
+          <input id="rateInput" type="number" inputmode="decimal" min="0" step="any" required />
+          <span class="suffix" id="rateCurrencyPrefix">৳</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="currencyInput">Currency symbol</label>
+        <div class="input-wrap">
+          <input id="currencyInput" type="text" maxlength="4" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" value="cancel" formnovalidate type="submit">Cancel</button>
+        <button class="btn primary" value="save" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
